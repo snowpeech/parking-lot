@@ -9,9 +9,43 @@
 
 
     <script>
-        
-        
-        
+    
+
+    function Car(make, year, plate) {
+        this.make = randMake();
+        this.year = randYear();
+        this.plate = plate;
+    }   
+    
+    function randMake(){
+        let arrMake = ['Honda','Toyota','Ford','Subaru','Jeep','Chevy'];
+        let rand = Math.floor(Math.random() * 5);
+        return  arrMake[rand];
+    }
+
+    function randYear(){
+        let year = Math.floor(Math.random() * 34) + 1985; 
+        return year;
+    }
+
+    function randPlate(){
+        let plate = '';
+        let arrABC = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        for (let i=0; i<7; i++){
+            if (i<3){
+                plate += arrABC[Math.floor(Math.random() * 25)];
+            }
+            else {
+                plate += Math.floor(Math.random() * 10);
+            }
+        }
+        return plate;
+    }
+        //arrABC[Math.floor(Math.random() * 25)];
+        //let year = Math.floor(Math.random() * 34) + 1985; 
+
+
+
         
     
     </script>
