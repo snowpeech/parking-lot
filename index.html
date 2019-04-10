@@ -8,13 +8,13 @@
     <div id = "visual">
         <!-- <input type="button" value="Show Car" id="showCar"/> -->
         <button onclick="createQueue()">Show Car</button>
-        <button onclick="parkCars()">Fill lot</button>
-        <button onclick="valet()">Who's the valet?</button>
+        <button onclick="commander()">Fill lot</button>
+        <!-- <button onclick="valet()">Who's the valet?</button> -->
     </div>
+    <div id="proxy"></div>
 
     <script>
         'use strict';
-
     //Car details
         var numberOfCars = 8;       
         var arrCarQueue = [];
@@ -27,17 +27,16 @@
             console.log(arrCarQueue)
         }
 
-
-        function Car(make, year, plate, parkTime, isParked) {
+        function Car(make, year, plate, parkTime) {
             this.make = randMake();
             this.year = randYear();
             this.plate = randPlate();
             this.parkTime = parkingTime();
-            this.isParked = false;
+            //this.isParked = false;
 
             this.parkMe = function (){
                 console.log("parking..")
-                this.isParked = true;
+                //this.isParked = true;
                 setTimeout(function(e){
                     e.leave();//leaving function
                 }, this.parkTime, this)
@@ -55,14 +54,14 @@
                 console.log("post splice")
                 console.log(arrLot)
                 
-                this.isParked = false;
+                //this.isParked = false;
                
                 console.log("carsParked counter")
                 console.log(carsParked)
                 
                 carsParked -= 1;
-               
-                console.log(carsParked) // I don't think much time is passing IRL
+                parkCars();
+                console.log(carsParked) 
                 console.groupEnd();
             }
 
@@ -104,41 +103,36 @@
         //var arrLot = new Array(parkingSpots);
         var arrLot = [];
         var carsParked = 0;
+        var lotIsFull = false;
+
+        function commander(){
+            if (carsParked < numberOfCars){
+                parkCars();
+            }
+            else {
+                console.log("lot has filled");
+            }
+        }
 
         function parkCars(){
-            while(carsParked < parkingSpots){  //may need to refactor once cars start to leave :( 
-                var addedCar = arrCarQueue.shift()
-                arrLot.push(addedCar); 
-                addedCar.parkMe();
+            
+            while(carsParked < parkingSpots && arrCarQueue.length > 0){
+                if(carsParked < parkingSpots){   
+                    var addedCar = arrCarQueue.shift()
+                    arrLot.push(addedCar); 
+                    addedCar.parkMe();
 
-                console.groupCollapsed(["parkCars function"])
-                console.log(arrLot[carsParked])
-                console.log(arrLot)
-                console.groupEnd();
-                carsParked++;
-            }    
-        }
+                    console.groupCollapsed(["parkCars function"])
+                    console.log(arrLot[carsParked])
+                    console.log(arrLot)
+                    console.groupEnd();
+                    carsParked++;
+                } 
+                
+            } //ends while loop
+             
+        } //ends function
         
-        function valet(){
-            var remainingCars = arrCarQueue.length;
-            console.log("valet starts")
-            console.log(remainingCars);
-
-            if (remainingCars > 0) {
-                setInterval(parkCars(),1000);
-                console.log(arrCarQueue)
-            }
-
-            else {
-                console.log("all cars parked");
-            }
-            //duplicated::
-            // while (arrCarQueue.length > 0) {
-            //     setInterval(parkCars(),1000);
-            // }
-        }
-        
-
      
     </script>
 
