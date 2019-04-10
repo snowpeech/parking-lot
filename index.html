@@ -9,13 +9,14 @@
         <!-- <input type="button" value="Show Car" id="showCar"/> -->
         <button onclick="createQueue()">Show Car</button>
         <button onclick="parkCars()">Fill lot</button>
+        <button onclick="valet()">Who's the valet?</button>
     </div>
 
     <script>
         'use strict';
 
     //Car details
-        var numberOfCars = 5;       
+        var numberOfCars = 8;       
         var arrCarQueue = [];
         
         function createQueue(){ 
@@ -34,12 +35,12 @@
             this.parkTime = parkingTime();
             this.isParked = false;
 
-            this.park = function (){
+            this.parkMe = function (){
                 console.log("parking..")
                 this.isParked = true;
                 setTimeout(function(e){
                     e.leave();//leaving function
-                },parkTime, this)
+                }, this.parkTime, this)
             }
 
             this.leave = function(){
@@ -62,7 +63,7 @@
                 carsParked -= 1;
                
                 console.log(carsParked) // I don't think much time is passing IRL
-                console.groupEnd
+                console.groupEnd();
             }
 
 
@@ -108,7 +109,7 @@
             while(carsParked < parkingSpots){  //may need to refactor once cars start to leave :( 
                 var addedCar = arrCarQueue.shift()
                 arrLot.push(addedCar); 
-                addedCar.park();
+                addedCar.parkMe();
 
                 console.groupCollapsed(["parkCars function"])
                 console.log(arrLot[carsParked])
@@ -118,6 +119,24 @@
             }    
         }
         
+        function valet(){
+            var remainingCars = arrCarQueue.length;
+            console.log("valet starts")
+            console.log(remainingCars);
+
+            if (remainingCars > 0) {
+                setInterval(parkCars(),1000);
+                console.log(arrCarQueue)
+            }
+
+            else {
+                console.log("all cars parked");
+            }
+            //duplicated::
+            // while (arrCarQueue.length > 0) {
+            //     setInterval(parkCars(),1000);
+            // }
+        }
         
 
      
