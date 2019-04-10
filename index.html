@@ -15,7 +15,7 @@
         'use strict';
 
     //Car details
-        var numberOfCars = 10;       
+        var numberOfCars = 5;       
         var arrCarQueue = [];
         
         function createQueue(){ 
@@ -33,13 +33,41 @@
             this.plate = randPlate();
             this.parkTime = parkingTime();
             this.isParked = false;
+
+            this.park = function (){
+                console.log("parking..")
+                this.isParked = true;
+                setTimeout(function(e){
+                    e.leave();//leaving function
+                },parkTime, this)
+            }
+
+            this.leave = function(){
+                console.groupCollapsed(["LEAVE FUNCTION."])
+                console.log(this)
+                console.log("pre splice")
+                console.log(arrLot)
+                console.log(arrLot.indexOf(this))
+
+                arrLot.splice(arrLot.indexOf(this),1); //removes car from Lot
+                
+                console.log("post splice")
+                console.log(arrLot)
+                
+                this.isParked = false;
+               
+                console.log("carsParked counter")
+                console.log(carsParked)
+                
+                carsParked -= 1;
+               
+                console.log(carsParked) // I don't think much time is passing IRL
+                console.groupEnd
+            }
+
+
         }   
 
-        function showMyCar(){
-            console.log("the newCar")
-            console.log(newCar)            
-        }
-        
         function randMake(){
             let arrMake = ['Honda','Toyota','Ford','Subaru','Jeep','Chevy'];
             let rand = Math.floor(Math.random() * 5);
@@ -77,31 +105,22 @@
         var carsParked = 0;
 
         function parkCars(){
-            while(carsParked <= parkingSpots){  //will need to refactor once cars start to leave :( 
-            arrLot.push(arrCarQueue.shift());
-            //arrLot()Car.isParked = true;
-            console.log(arrLot[carsParked])
-            arrLot[carsParked].isParked = true;
-            console.log(arrLot)
-            carsParked += 1;
+            while(carsParked < parkingSpots){  //may need to refactor once cars start to leave :( 
+                var addedCar = arrCarQueue.shift()
+                arrLot.push(addedCar); 
+                addedCar.park();
+
+                console.groupCollapsed(["parkCars function"])
+                console.log(arrLot[carsParked])
+                console.log(arrLot)
+                console.groupEnd();
+                carsParked++;
             }    
         }
         
         
 
-        // var carCounter = 0;
-        // var availableSpots = parkingSpots - carCounter; //definitely a cleaner way to do this. when car leaves carCounter -=1
-        // console.log(availableSpots)
-        // //for loop to initially fill parking lot?
-        // for (let i = 0; i< availableSpots; i++){ //maybe better as a while loop create variable carsParked
-        //     console.log(arrCarQueue[0])
-        //     arrLot.push(arrCarQueue.shift());
-        //     carCounter += 1;
-        // }
-
-        
-
-
+     
     </script>
 
 </body>
