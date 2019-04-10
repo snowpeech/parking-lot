@@ -16,7 +16,7 @@
     <script>
         'use strict';
     //Car details
-        var numberOfCars = 8;       
+        var numberOfCars = 50;       
         var arrCarQueue = [];
         
         function createQueue(){ 
@@ -94,23 +94,27 @@
         }
         
         function parkingTime(){
-            let parkTime = (Math.floor(Math.random() * 6 ) + 1) * 1000; //parking time: 1-6 seconds
+            let parkTime = (Math.floor(Math.random() * 5 ) + 1) * 1000; //parking time: 1-5 seconds
             return parkTime;
         }
     
     //Parking lot details
-        var parkingSpots = 3;
+        var parkingSpots = 10;
         //var arrLot = new Array(parkingSpots);
         var arrLot = [];
         var carsParked = 0;
+        var totalCarsParked = 0;
         var lotIsFull = false;
 
         function commander(){
-            if (carsParked < numberOfCars){
+            if (totalCarsParked < numberOfCars){
+                console.log("let's park cars")
                 parkCars();
+                console.log("YES. " +totalCarsParked+ " cars have parked")
             }
             else {
                 console.log("lot has filled");
+                console.log(carsParked+ " cars have parked")
             }
         }
 
@@ -126,7 +130,9 @@
                     console.log(arrLot[carsParked])
                     console.log(arrLot)
                     console.groupEnd();
-                    carsParked++;
+                    carsParked+=1;
+                    totalCarsParked +=1;
+                    console.log(carsParked)
                 } 
                 
             } //ends while loop
