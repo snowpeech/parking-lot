@@ -8,13 +8,13 @@
     <div id = "visual">
         <!-- <input type="button" value="Show Car" id="showCar"/> -->
         <button onclick="createQueue()">Show Car</button>
+        <button onclick="parkCars()">Fill lot</button>
     </div>
-
-
-
 
     <script>
         'use strict';
+
+    //Car details
         var numberOfCars = 10;       
         var arrCarQueue = [];
         
@@ -27,10 +27,12 @@
         }
 
 
-        function Car(make, year, plate) {
+        function Car(make, year, plate, parkTime, isParked) {
             this.make = randMake();
             this.year = randYear();
             this.plate = randPlate();
+            this.parkTime = parkingTime();
+            this.isParked = false;
         }   
 
         function showMyCar(){
@@ -50,7 +52,7 @@
         }
 
         function randPlate(){
-            let plate = '';
+            let plate = ''; //Washington license plates 
             let arrABC = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
             for (let i=0; i<7; i++){
                 if (i<3){
@@ -61,8 +63,45 @@
                 }
             }
             return plate;
-        }        
+        }
+        
+        function parkingTime(){
+            let parkTime = (Math.floor(Math.random() * 6 ) + 1) * 1000; //parking time: 1-6 seconds
+            return parkTime;
+        }
     
+    //Parking lot details
+        var parkingSpots = 3;
+        //var arrLot = new Array(parkingSpots);
+        var arrLot = [];
+        var carsParked = 0;
+
+        function parkCars(){
+            while(carsParked <= parkingSpots){  //will need to refactor once cars start to leave :( 
+            arrLot.push(arrCarQueue.shift());
+            //arrLot()Car.isParked = true;
+            console.log(arrLot[carsParked])
+            arrLot[carsParked].isParked = true;
+            console.log(arrLot)
+            carsParked += 1;
+            }    
+        }
+        
+        
+
+        // var carCounter = 0;
+        // var availableSpots = parkingSpots - carCounter; //definitely a cleaner way to do this. when car leaves carCounter -=1
+        // console.log(availableSpots)
+        // //for loop to initially fill parking lot?
+        // for (let i = 0; i< availableSpots; i++){ //maybe better as a while loop create variable carsParked
+        //     console.log(arrCarQueue[0])
+        //     arrLot.push(arrCarQueue.shift());
+        //     carCounter += 1;
+        // }
+
+        
+
+
     </script>
 
 </body>
