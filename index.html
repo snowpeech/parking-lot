@@ -7,8 +7,8 @@
 
     <div id = "visual">
         <!-- <input type="button" value="Show Car" id="showCar"/> -->
-        <button onclick="createQueue()">Show Car</button>
-        <button onclick="commander()">Fill lot</button>
+        <!-- <button onclick="createQueue()">Show Car</button> -->
+        <button onclick="commander()">Let's park cars</button>
         <!-- <button onclick="valet()">Who's the valet?</button> -->
     </div>
     <div id="proxy"></div>
@@ -16,8 +16,17 @@
     <script>
         'use strict';
     //Car details
-        var numberOfCars = 100;       
+        const numberOfCars = 20;
+        const parkingSpots = 5;
+
         var arrCarQueue = [];
+        var arrLot = [];
+        
+        //var arrLot = new Array(parkingSpots);
+        
+        var carsParked = 0;
+        var totalCarsParked = 0;
+        var lotIsFull = false; //delete later
         
         function createQueue(){ 
             for (var i = 0; i < numberOfCars; i++){
@@ -35,34 +44,36 @@
             //this.isParked = false;
 
             this.parkMe = function (){
-                console.log("parking..")
+                // console.log("parking..")
                 //this.isParked = true;
+                console.log("Setting timer for car in space!")
                 setTimeout(function(e){
                     e.leave();//leaving function
                 }, this.parkTime, this)
             }
 
             this.leave = function(){
-                console.groupCollapsed(["LEAVE FUNCTION."])
-                console.log(this)
-                console.log("pre splice")
-                console.log(arrLot)
-                console.log(arrLot.indexOf(this))
+                // console.groupCollapsed(["LEAVE FUNCTION."])
+                // console.log(this)
+                // console.log("pre splice")
+                // console.log(arrLot)
+                // console.log(arrLot.indexOf(this))
 
                 arrLot.splice(arrLot.indexOf(this),1); //removes car from Lot
-                
-                console.log("post splice")
-                console.log(arrLot)
+                console.log("Leaving Lot", this)
+
+                // console.log("post splice")
+                // console.log(arrLot)
                 
                 //this.isParked = false;
                
-                console.log("carsParked counter")
-                console.log(carsParked)
+                // console.log("carsParked counter")
+                // console.log(carsParked)
                 
                 carsParked -= 1;
                 parkCars();
-                console.log(carsParked) 
-                console.groupEnd();
+                // console.log(carsParked) 
+                // console.groupEnd();
             }
 
 
@@ -99,14 +110,10 @@
         }
     
     //Parking lot details
-        var parkingSpots = 10;
-        //var arrLot = new Array(parkingSpots);
-        var arrLot = [];
-        var carsParked = 0;
-        var totalCarsParked = 0;
-        var lotIsFull = false;
+        
 
         function commander(){
+            createQueue();
             if (totalCarsParked < numberOfCars){
                 console.log("let's park cars")
                 parkCars();
@@ -119,24 +126,30 @@
         }
 
         function parkCars(){
-            
             while(carsParked < parkingSpots && arrCarQueue.length > 0){
                 if(carsParked < parkingSpots){   
                     var addedCar = arrCarQueue.shift()
+                    console.log("Parking cars!", addedCar)
+
                     arrLot.push(addedCar); 
                     addedCar.parkMe();
 
-                    console.groupCollapsed(["parkCars function"])
-                    console.log(arrLot[carsParked])
-                    console.log(arrLot)
-                    console.groupEnd();
+                    // console.groupCollapsed(["parkCars function"])
+                    // console.log(arrLot[carsParked])
+                    // console.log(arrLot)
+                    // console.groupEnd();
                     carsParked+=1;
                     totalCarsParked +=1;
-                    console.log(carsParked)
+                    // console.log(carsParked)
                 } 
                 
             } //ends while loop
-             
+
+            if(arrCarQueue.length == 0){
+                console.log(arrCarQueue) 
+                console.log(arrLot)             
+
+            }
         } //ends function
         
      
