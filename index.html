@@ -16,8 +16,8 @@
     <script>
         'use strict';   
     //Car details
-        const numberOfCars = 100;
-        const parkingSpots = 10;
+        const numberOfCars = 20;
+        const parkingSpots = 5;
 
         var arrCarQueue = [];
         var arrLot = [];
@@ -26,7 +26,12 @@
         
         var carsParked = 0;
         var totalCarsParked = 0;
-        var lotIsFull = false; //delete later
+
+        var proxy = document.getElementById("proxy");
+        
+        var carLeft = new CustomEvent('carLeft');
+
+        proxy.addEventListener("carLeft", parkCars);  //event listener to parkCars when a car leaves. Car.leave dispatches the custom event
         
         function createQueue(){ 
             for (var i = 0; i < numberOfCars; i++){
@@ -41,43 +46,25 @@
             this.year = randYear();
             this.plate = randPlate();
             this.parkTime = parkingTime();
-            //this.isParked = false;
 
             this.parkMe = function (){
-                // console.log("parking..")
-                //this.isParked = true;
                 console.log("Setting timer for car in space!")
                 setTimeout(function(e){
-                    e.leave();//leaving function
+                    e.leave(); //leaving function
                 }, this.parkTime, this)
             }
 
             this.leave = function(){
-                // console.groupCollapsed(["LEAVE FUNCTION."])
-                // console.log(this)
-                // console.log("pre splice")
-                // console.log(arrLot)
-                // console.log(arrLot.indexOf(this))
 
                 arrLot.splice(arrLot.indexOf(this),1); //removes car from Lot
                 console.log("Leaving Lot", this)
 
-                // console.log("post splice")
-                // console.log(arrLot)
-                
-                //this.isParked = false;
-               
-                // console.log("carsParked counter")
-                // console.log(carsParked)
-                
                 carsParked -= 1;
-                parkCars();
-                // console.log(carsParked) 
-                // console.groupEnd();
+                proxy.dispatchEvent(carLeft); // triggers custom event
             }
 
-
         }   
+
 
         function randMake(){
             let arrMake = ['Honda','Toyota','Ford','Subaru','Jeep','Chevy'];
@@ -110,18 +97,16 @@
         }
     
     //Parking lot details
-        
 
         function commander(){
             createQueue();
             if (totalCarsParked < numberOfCars){
                 console.log("let's park cars")
                 parkCars();
-                console.log("YES. " +totalCarsParked+ " cars have parked")
             }
             else {
                 console.log("lot has filled");
-                console.log(carsParked+ " cars have parked")
+                console.log(totalCarsParked+ " cars have parked")
             }
         }
 
@@ -129,7 +114,7 @@
             while(carsParked < parkingSpots && arrCarQueue.length > 0){
                 if(carsParked < parkingSpots){   
                     var addedCar = arrCarQueue.shift()
-                    console.log("Parking cars!", addedCar)
+                    console.log("Parking car:", addedCar)
 
                     arrLot.push(addedCar); 
                     addedCar.parkMe();
@@ -147,9 +132,11 @@
 
             if(arrCarQueue.length == 0){
                 console.log(arrCarQueue) 
-                console.log(arrLot)             
-
+                console.log(arrLot)
             }
+
+            console.log(totalCarsParked + " have parked and left")
+
         } //ends function
         
      
